@@ -23,8 +23,8 @@ session.execute("""
 CREATE TABLE profiles (
     id int,
     firstName text,
-    favoriteColor varchar(64),
-    familyStatus list,
+    favoriteColor varchar,
+    familyStatus list<text>
     primary key (id)
 );
 """)
