@@ -48,18 +48,16 @@ session.execute(
 
 ```python
 from cassandra.query import SimpleStatement, BatchStatement
-batch = BatchStatement()
+from cassandra import ConsistencyLevel
+
+batch = BatchStatement(consistency_level=ConsistencyLevel.QUORUM)
 batch.add(
-    SimpleStatement(
-        "INSERT INTO profiles (id, firstName, lastName, familyStatus) VALUES (%s, %s, %s, %s)"
-        (str(uuid.uuid1()), "Paul", "Jetson", ['brother', 'son']),
-    )
+    SimpleStatement("INSERT INTO profiles (id, firstName, lastName, familyStatus) VALUES (%s, %s, %s, %s)"),
+    (str(uuid.uuid1()), "Paul", "Jetson", ['brother', 'son'])
 )
 batch.add(
-    SimpleStatement(
-        "INSERT INTO profiles (id, firstName, lastName, favoriteColor) VALUES (%s, %s, %s, %s)"
-        (str(uuid.uuid1()), "Chris", "Jetson", "Hot Pink"),
-    )
+    SimpleStatement("INSERT INTO profiles (id, firstName, lastName, favoriteColor) VALUES (%s, %s, %s, %s)"),
+    (str(uuid.uuid1()), "Chris", "Jetson", "Hot Pink")
 )
 session.execute(batch)
 ```
