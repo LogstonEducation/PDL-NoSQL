@@ -23,6 +23,7 @@ session.execute("""
 CREATE TABLE profiles (
     id varchar,
     firstName text,
+    lastName text,
     favoriteColor varchar,
     familyStatus list<text>,
     primary key (id)
@@ -36,24 +37,31 @@ CREATE TABLE profiles (
 import uuid
 session.execute(
     """
-    INSERT INTO profiles (id, firstName, favoriteColor, familyStatus)
-    VALUES (%s, %s, %s)",
-    (uuid.uuid1(), "Eileen", "Deep Blue", ["mom"])
-    """
+    INSERT INTO profiles (id, firstName, lastName, favoriteColor, familyStatus)
+    VALUES (%s, %s, %s, %s, %s)
+    """,
+    (str(uuid.uuid1()), "Eileen", "Jetson", "Deep Blue", ['mom'])
 )
 ```
 
 ##### Insert a bunch of data
 
 ```python
-data = [
-    {"FirstName": "Paul", "LastName": "Jetson", "FamilyStatus": ["brother", "son"]},
-    {"FirstName": "Chris", "LastName": "Jetson", "FavoriteColor": "Hot Pink"},
-]
-
-result = cn.insert_many(data)
-
-result
+from cassandra.query import SimpleStatement, BatchStatement
+batch = BatchStatement()
+batch.add(
+    SimpleStatement(
+        "INSERT INTO profiles (id, firstName, lastName, familyStatus) VALUES (%s, %s, %s, %s)"
+        (str(uuid.uuid1()), "Paul", "Jetson", ['brother', 'son']),
+    )
+)
+batch.add(
+    SimpleStatement(
+        "INSERT INTO profiles (id, firstName, lastName, favoriteColor) VALUES (%s, %s, %s, %s)"
+        (str(uuid.uuid1()), "Chris", "Jetson", "Hot Pink"),
+    )
+)
+session.execute(batch)
 ```
 
 
