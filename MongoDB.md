@@ -2,9 +2,9 @@ Let's create a database for an Instragram-like, family oriented
 album application: Instafam.
 
 
-- Create Database
+##### Create Database
 
-  Database is created on the fly if one does not exist!
+Database is created on the fly if one does not exist!
 
 ```python
 import pymongo
@@ -12,28 +12,28 @@ client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client["instafam"]
 ```
 
-- Create a Collection
+##### Create a Collection
 
 ```python
 cn = db["profiles"]
 ```
 
-- Insert a record into the collection
+##### Insert a record into the collection
 
+```python
+data = {
+    "FirstName": "Eileen",
+    "LastName": "Jetson",
+    "FamilyStatus": ["mom", "daughter"],
+    "FavoriteColor": "Deep Blue",
+}
 
-    data = {
-        "FirstName": "Eileen",
-        "LastName": "Jetson",
-        "FamilyStatus": ["mom", "daughter"],
-        "FavoriteColor": "Deep Blue",
-    }
+result = cn.insert_one(data)
 
-    result = cn.insert_one(data)
+result
 
-    result
-
-    result.inserted_id
-
+result.inserted_id
+```
 
 - Insert a bunch of data
 
