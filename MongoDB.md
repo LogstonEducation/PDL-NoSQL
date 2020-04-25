@@ -35,78 +35,102 @@ result
 result.inserted_id
 ```
 
-- Insert a bunch of data
+##### Insert a bunch of data
+
+```python
+data = [
+    {"FirstName": "Paul", "LastName": "Jetson", "FamilyStatus": ["brother", "son"]},
+    {"FirstName": "Chris", "LastName": "Jetson", "FavoriteColor": "Hot Pink"},
+]
+
+result = cn.insert_many(data)
+
+result
+```
 
 
-    data = [
-        {"FirstName": "Paul", "LastName": "Jetson", "FamilyStatus": ["brother", "son"]},
-        {"FirstName": "Chris", "LastName": "Jetson", "FavoriteColor": "Hot Pink"},
-    ]
+##### Find a record
 
-    result = cn.insert_many(data)
-
-    result
+```python
+cn.find_one()
+```
 
 
-- Find a record
+##### Find several records
 
 
-    cn.find_one()
+```python
+cn.find()
+```
+
+##### Find a record by an attribute value
 
 
-- Find several records
+```python
+cn.find({"FirstName": "Eileen"})
+```
+
+##### Find a record by an attribute value
 
 
-    cn.find()
+```python
+cn.find({"FamilyStatus": ["brother"]})
+```
 
-- Find a record by an attribute value
-
-
-    cn.find({"FirstName": "Eileen"})
-
-- Find a record by an attribute value
+##### Find several records with a single field removed
 
 
-    cn.find({"FamilyStatus": ["brother"]})
+```python
+cn.find({}, {"FavoriteColor": 0})
+```
 
-- Find several records with a single field removed
-
-
-    cn.find({}, {"FavoriteColor": 0})
-
-- Sorting returned results
+##### Sorting returned results
 
 
-    cn.find().sort("FirstName")
-    cn.find().sort("FirstName", 1)
-    cn.find().sort("FirstName", -1)
+```python
+cn.find().sort("FirstName")
+cn.find().sort("FirstName", 1)
+cn.find().sort("FirstName", -1)
+```
 
-- Limit returned results
+##### Limit returned results
 
-    cn.find().sort("FirstName").limit(2)
+```python
+cn.find().sort("FirstName").limit(2)
+```
 
-- Update a record
+##### Update a record
 
-    q = {"FirstName": "Eileen"}
-    v = {"$set": {"FamilyStatus": ["mom", "daughter", "sister"]}}
-    cn.update_one(q, v)
+```python
+q = {"FirstName": "Eileen"}
+v = {"$set": {"FamilyStatus": ["mom", "daughter", "sister"]}}
+cn.update_one(q, v)
+```
 
-- Update several records
+##### Update several records
 
-    q = {"LastName": "Jetson"}
-    v = {"$set": {"LastName": "Hsieh"}}
-    cn.update_many(q, v)
+```python
+q = {"LastName": "Jetson"}
+v = {"$set": {"LastName": "Hsieh"}}
+cn.update_many(q, v)
+```
 
-- Delete a record
+##### Delete a record
 
-    q = {"FirstName": "Paul"}
-    cn.delete_one(q)
+```python
+q = {"FirstName": "Paul"}
+cn.delete_one(q)
+```
 
-- Delete several records
+##### Delete several records
 
-    q = {"LastName": "Hsieh"}
-    cn.delete_many(q)
+```python
+q = {"LastName": "Hsieh"}
+cn.delete_many(q)
+```
 
-- Drop a collection
+##### Drop a collection
 
-    cn.drop()
+```python
+cn.drop()
+```
