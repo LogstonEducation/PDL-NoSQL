@@ -12,9 +12,11 @@ album application: Instafam.
 
 - Create a Collection
 
+
     cn = db["profiles"]
 
 - Insert a record into the collection
+
 
     data = {
         "FirstName": "Eileen",
@@ -29,7 +31,9 @@ album application: Instafam.
 
     result.inserted_id
 
+
 - Insert a bunch of data
+
 
     data = [
         {"FirstName": "Paul", "LastName": "Jetson", "FamilyStatus": ["brother", "son"]},
@@ -40,27 +44,35 @@ album application: Instafam.
 
     result
 
+
 - Find a record
+
 
     cn.find_one()
 
+
 - Find several records
+
 
     cn.find()
 
 - Find a record by an attribute value
 
+
     cn.find({"FirstName": "Eileen"})
 
 - Find a record by an attribute value
+
 
     cn.find({"FamilyStatus": ["brother"]})
 
 - Find several records with a single field removed
 
+
     cn.find({}, {"FavoriteColor": 0})
 
 - Sorting returned results
+
 
     cn.find().sort("FirstName")
     cn.find().sort("FirstName", 1)
