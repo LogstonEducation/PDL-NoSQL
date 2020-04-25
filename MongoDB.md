@@ -63,47 +63,50 @@ cn.find_one()
 cn.find()
 ```
 
-##### Find a record by an attribute value
-
-
 ```python
-cn.find({"FirstName": "Eileen"})
+list(cn.find())
 ```
 
 ##### Find a record by an attribute value
 
 
 ```python
-cn.find({"FamilyStatus": ["brother"]})
+list(cn.find({"FirstName": "Eileen"}))
+```
+
+##### Find a record by an attribute value
+
+
+```python
+list(cn.find({"FamilyStatus": "brother"}))
 ```
 
 ##### Find several records with a single field removed
 
 
 ```python
-cn.find({}, {"FavoriteColor": 0})
+list(cn.find({}, {"FavoriteColor": 0}))
 ```
 
 ##### Sorting returned results
 
-
 ```python
-cn.find().sort("FirstName")
-cn.find().sort("FirstName", 1)
-cn.find().sort("FirstName", -1)
+list(cn.find().sort("FirstName"))
+list(cn.find().sort("FirstName", 1))
+list(cn.find().sort("FirstName", -1))
 ```
 
 ##### Limit returned results
 
 ```python
-cn.find().sort("FirstName").limit(2)
+list(cn.find().sort("FirstName").limit(2))
 ```
 
 ##### Update a record
 
 ```python
 q = {"FirstName": "Eileen"}
-v = {"$set": {"FamilyStatus": ["mom", "daughter", "sister"]}}
+v = {"$push": {"FamilyStatus": "sister"}}
 cn.update_one(q, v)
 ```
 
@@ -120,6 +123,7 @@ cn.update_many(q, v)
 ```python
 q = {"FirstName": "Paul"}
 cn.delete_one(q)
+len(list(cn.find()))
 ```
 
 ##### Delete several records
