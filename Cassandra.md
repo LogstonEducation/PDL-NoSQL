@@ -10,14 +10,24 @@ clstr = Cluster()
 session = clstr.connect()
 
 session.execute(
-    "CREATE KEYSPACE profiles "
-    "WTH REPLICATION={'class': 'SimpleStrategy', 'replication_factor' : 3};"
+    "CREATE KEYSPACE instafam "
+    "WITH REPLICATION={'class': 'SimpleStrategy', 'replication_factor' : 3};"
 )
 ```
 
+##### Create Table
 
 ```python
-cn = db["profiles"]
+session = clstr.connect('instafam')
+session.execute("""
+CREATE TABLE profiles (
+    id int,
+    firstName text,
+    favoriteColor varchar(64),
+    familyStatus list,
+    primary key (id)
+);
+""")
 ```
 
 ##### Insert a record into the collection
