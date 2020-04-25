@@ -6,14 +6,17 @@ album application: Instafam.
 
   Database is created on the fly if one does not exist!
 
-    import pymongo
-    client = pymongo.MongoClient("mongodb://localhost:27017/")
-    db = client["instafam"]
+```python
+import pymongo
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+db = client["instafam"]
+```
 
 - Create a Collection
 
-
-    cn = db["profiles"]
+```python
+cn = db["profiles"]
+```
 
 - Insert a record into the collection
 
