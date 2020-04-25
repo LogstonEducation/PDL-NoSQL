@@ -50,7 +50,7 @@ session.execute(
 from cassandra.query import SimpleStatement, BatchStatement
 from cassandra import ConsistencyLevel
 
-batch = BatchStatement(consistency_level=ConsistencyLevel.QUORUM)
+batch = BatchStatement(consistency_level=ConsistencyLevel.ONE)
 batch.add(
     SimpleStatement("INSERT INTO profiles (id, firstName, lastName, familyStatus) VALUES (%s, %s, %s, %s)"),
     (str(uuid.uuid1()), "Paul", "Jetson", ['brother', 'son'])
@@ -62,30 +62,28 @@ batch.add(
 session.execute(batch)
 ```
 
-
-##### Find a record
-
-```python
-cn.find_one()
-```
-
-
 ##### Find several records
 
 
 ```python
-cn.find()
-```
-
-```python
-list(cn.find())
+list(session.execute("SELECT * FROM profiles"))
 ```
 
 ##### Find a record by an attribute value
 
 
 ```python
-list(cn.find({"FirstName": "Eileen"}))
+list(session.execute("SELECT * FROM profiles WHERE firstName = 'Eileen'")
+```
+This throws an error because we are not use the appropriate index/partition:
+
+    cassandra.InvalidRequest: Error from server: code=2200 [Invalid query] me
+    ssage="Cannot execute this query as it might involve data filtering and t
+    hus may have unpredictable performance. If you want to execute this query
+     despite the performance unpredictability, use ALLOW FILTERING"
+
+```python
+list(session.execute("SELECT * FROM profiles WHERE firstName = 'Eileen' ALLOW FILTERING")
 ```
 
 ##### Find a record by an attribute value
@@ -119,17 +117,12 @@ list(cn.find().sort("FirstName").limit(2))
 ##### Update a record
 
 ```python
-q = {"FirstName": "Eileen"}
-v = {"$push": {"FamilyStatus": "sister"}}
-cn.update_one(q, v)
-```
-
-##### Update several records
-
-```python
-q = {"LastName": "Jetson"}
-v = {"$set": {"LastName": "Hsieh"}}
-cn.update_many(q, v)
+user_id = 
+query = SimpleStatement(
+    "UPDATE profiles SET familyStatus = ['mom', 'sister'] WHERE id = %s";
+    is_idempotent=True
+)
+session.execute(query, (user_id,))
 ```
 
 ##### Delete a record
