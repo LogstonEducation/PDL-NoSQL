@@ -2,17 +2,23 @@ Let's create a database for an Instragram-like, family oriented
 album application: Instafam.
 
 
-##### Create Database
+##### Create Keyspace
 
 Database is created on the fly if one does not exist!
 
 ```python
-import pymongo
-client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client["instafam"]
+from cassandra.cluster import Cluster
+clstr = Cluster()
+session = clstr.connect()
+
+session.execute(
+    """
+    CREATE KEYSPACE profiles
+    WTH REPLICATION={'class': 'SimpleStrategy', 'replication_factor' : 3};
+    """
+)
 ```
 
-##### Create a Collection
 
 ```python
 cn = db["profiles"]

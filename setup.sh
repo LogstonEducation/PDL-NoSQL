@@ -5,8 +5,7 @@ sudo apt update
 sudo apt install -y mongodb python3-venv openjdk-8-jdk apt-transport-https cassandra
 if [ ! -f env ]; then
 python3 -m venv env
-./env/bin/pip install pymongo
-./env/bin/pip install -U pip
+./env/bin/pip install -U pip pymongo cassandra-driver
 fi
 echo waiting for Cassandra to start up
 sleep 5;
