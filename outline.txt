@@ -1,0 +1,13 @@
+Create GCP account.
+Add credit.
+Get Compute Engine ready.
+
+insert
+find
+query
+sort 
+limit
+update
+delete
+drop collection
+
