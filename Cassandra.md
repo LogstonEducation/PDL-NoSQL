@@ -4,18 +4,14 @@ album application: Instafam.
 
 ##### Create Keyspace
 
-Database is created on the fly if one does not exist!
-
 ```python
 from cassandra.cluster import Cluster
 clstr = Cluster()
 session = clstr.connect()
 
 session.execute(
-    """
-    CREATE KEYSPACE profiles
-    WTH REPLICATION={'class': 'SimpleStrategy', 'replication_factor' : 3};
-    """
+    "CREATE KEYSPACE profiles "
+    "WTH REPLICATION={'class': 'SimpleStrategy', 'replication_factor' : 3};"
 )
 ```
 
