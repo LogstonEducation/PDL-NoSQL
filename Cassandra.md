@@ -21,10 +21,10 @@ session.execute(
 session = clstr.connect('instafam')
 session.execute("""
 CREATE TABLE profiles (
-    id int,
+    id varchar,
     firstName text,
     favoriteColor varchar,
-    familyStatus list<text>
+    familyStatus list<text>,
     primary key (id)
 );
 """)
@@ -33,18 +33,14 @@ CREATE TABLE profiles (
 ##### Insert a record into the collection
 
 ```python
-data = {
-    "FirstName": "Eileen",
-    "LastName": "Jetson",
-    "FamilyStatus": ["mom", "daughter"],
-    "FavoriteColor": "Deep Blue",
-}
-
-result = cn.insert_one(data)
-
-result
-
-result.inserted_id
+import uuid
+session.execute(
+    """
+    INSERT INTO profiles (id, firstName, favoriteColor, familyStatus)
+    VALUES (%s, %s, %s)",
+    (uuid.uuid1(), "Eileen", "Deep Blue", ["mom"])
+    """
+)
 ```
 
 ##### Insert a bunch of data
