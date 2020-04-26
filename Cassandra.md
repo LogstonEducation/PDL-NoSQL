@@ -9,6 +9,10 @@ from cassandra.cluster import Cluster
 clstr = Cluster()
 session = clstr.connect()
 
+# Use to reset the cluster in case a mistake is made during 
+# the tutorial.
+session.execute("DROP KEYSPACE IF EXISTS instafam")
+
 session.execute(
     "CREATE KEYSPACE instafam "
     "WITH REPLICATION={'class': 'SimpleStrategy', 'replication_factor' : 3};"
@@ -83,65 +87,78 @@ This throws an error because we are not use the appropriate index/partition:
      despite the performance unpredictability, use ALLOW FILTERING"
 
 ```python
-list(session.execute("SELECT * FROM profiles WHERE firstName = 'Eileen' ALLOW FILTERING")
+list(session.execute("SELECT * FROM profiles WHERE firstName = 'Eileen' ALLOW FILTERING"))
 ```
 
-##### Find a record by an attribute value
+##### Find single record and single column
 
 
 ```python
-list(cn.find({"FamilyStatus": "brother"}))
-```
-
-##### Find several records with a single field removed
-
-
-```python
-list(cn.find({}, {"FavoriteColor": 0}))
+list(session.execute("SELECT id FROM profiles WHERE firstName = 'Eileen' ALLOW FILTERING"))
 ```
 
 ##### Sorting returned results
 
 ```python
-list(cn.find().sort("FirstName"))
-list(cn.find().sort("FirstName", 1))
-list(cn.find().sort("FirstName", -1))
+list(session.execute("""
+    SELECT firstName FROM profiles
+    ORDER BY firstName;
+"""))
 ```
+
+Fails because Cassandra knows this could be VERY expensive. Should have partitioned
+on firstName if we wanted to select/order/etc based on that.
+Could have also create the table with built in ordering.
+
+Eg. 
+```python
+   PRIMARY KEY (id, firstName)
+) WITH CLUSTERING ORDER BY (firstName ASC);
+```
+
+"id" would be the partitioning key and would indicate which node the data
+will be saved on. "firstName" would be the clustering key and it would help with
+sorting. Together the would make a compound primary key.
+
+A best long term solution to fetching this data in a sorted way would be to
+copy the table into a new table with correct key definitions.
+
+What would be a good partitioning key for an based on getting family data all at once?[^1]
 
 ##### Limit returned results
 
 ```python
-list(cn.find().sort("FirstName").limit(2))
+list(session.execute("SELECT id FROM profiles LIMIT 1"))
 ```
 
 ##### Update a record
 
 ```python
-user_id = 
-query = SimpleStatement(
-    "UPDATE profiles SET familyStatus = ['mom', 'sister'] WHERE id = %s";
-    is_idempotent=True
-)
-session.execute(query, (user_id,))
+rows = list(session.execute("SELECT id FROM profiles WHERE firstName = 'Eileen' ALLOW FILTERING"))
+row = rows[0]
+session.execute("UPDATE profiles SET familyStatus = ['mom', 'sister'] WHERE id = %s", (row.id,))
+# Check the change
+list(session.execute("SELECT * FROM profiles WHERE id = %s", (row.id,)))
+```
+
+##### Delete a column in a record
+
+```python
+session.execute("DELETE familyStatus FROM profiles WHERE id = %s", (row.id,))
+list(session.execute("SELECT * FROM profiles WHERE id = %s", (row.id,)))
 ```
 
 ##### Delete a record
 
 ```python
-q = {"FirstName": "Paul"}
-cn.delete_one(q)
-cn.find().count()
+session.execute("DELETE FROM profiles WHERE id = %s", (row.id,))
+list(session.execute("SELECT * FROM profiles WHERE id = %s", (row.id,)))
 ```
 
-##### Delete several records
+##### Drop a table
 
 ```python
-q = {"LastName": "Hsieh"}
-cn.delete_many(q)
+session.execute("DROP TABLE profiles")
 ```
 
-##### Drop a collection
-
-```python
-cn.drop()
-```
+[^1]: lastName
