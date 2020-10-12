@@ -1,9 +1,8 @@
-- VM Creation Instructions: https://goo.gl/DfMx3w
+- VM Creation Instructions: https://docs.google.com/document/d/17RKzoPruH6Eo08MUvG-pX0ZTNowkNl-QWZMLguC8oTU
 
-    - Use pdl-nosql-2020-spr-<UNI> for project name
-    - Do not go on to configuration guide. Just do VM Setup Guide.
+    - Use pdl-nosql-<year>-<semester>-<UNI> for project name
 
-- Run setup.sh at command line
+- Run config.sh at command line
 
 Takes about 2 minutes to complete
 
