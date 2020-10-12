@@ -10,7 +10,7 @@ Setup guide:
 Server Code: {SERVER_CODE}
 
 Slides: https://docs.google.com/presentation/d/1LeOseOV_LX6rrbUfDpDLIaLSW8JZxhvarLQzmngrDjk/
-GitHub: 
+GitHub: https://github.com/LogstonEducation/pdl-nosql
 
 Best,
 Paul
