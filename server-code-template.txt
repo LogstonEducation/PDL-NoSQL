@@ -1,0 +1,16 @@
+Hello {EMAIL}!
+
+You've been issued a server code for use use with the PDL NoSQL
+course. Please use the code and guide below to setup your Google Cloud Platform account.
+
+- Use "pdl-nosql-2020-fall-<YOUR UNI>" for project name
+
+Setup guide: 
+
+Server Code: {SERVER_CODE}
+
+Slides: https://docs.google.com/presentation/d/1LeOseOV_LX6rrbUfDpDLIaLSW8JZxhvarLQzmngrDjk/
+GitHub: 
+
+Best,
+Paul
