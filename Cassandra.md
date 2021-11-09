@@ -77,14 +77,14 @@ list(session.execute("SELECT * FROM profiles"))
 
 
 ```python
-list(session.execute("SELECT * FROM profiles WHERE firstName = 'Eileen'")
+list(session.execute("SELECT * FROM profiles WHERE firstName = 'Eileen'"))
 ```
 This throws an error because we are not use the appropriate index/partition:
 
     cassandra.InvalidRequest: Error from server: code=2200 [Invalid query] me
-    ssage="Cannot execute this query as it might involve data filtering and t
-    hus may have unpredictable performance. If you want to execute this query
-     despite the performance unpredictability, use ALLOW FILTERING"
+    ssage="Cannot execute this query as it might involve data filtering and 
+    thus may have unpredictable performance. If you want to execute this query
+    despite the performance unpredictability, use ALLOW FILTERING"
 
 ```python
 list(session.execute("SELECT * FROM profiles WHERE firstName = 'Eileen' ALLOW FILTERING"))
