@@ -123,7 +123,7 @@ cn.update_many(q, v)
 ```python
 q = {"FirstName": "Paul"}
 cn.delete_one(q)
-cn.find().count()
+cn.count_documents({})
 ```
 
 ##### Delete several records
