@@ -79,7 +79,7 @@ list(session.execute("SELECT * FROM profiles"))
 ```python
 list(session.execute("SELECT * FROM profiles WHERE firstName = 'Eileen'"))
 ```
-This throws an error because we are not use the appropriate index/partition:
+This throws an error because we are not using an appropriate index/partition:
 
     cassandra.InvalidRequest: Error from server: code=2200 [Invalid query] me
     ssage="Cannot execute this query as it might involve data filtering and 
